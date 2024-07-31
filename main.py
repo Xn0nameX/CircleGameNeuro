@@ -34,7 +34,7 @@ black = (0, 0, 0)
 white = (255, 255, 255)
 
 circle_radius = 30
-circle_speed = 3
+circle_speed = 8
 circle_color = blue
 circle_pos = [screen_width // 2, screen_height // 2]
 circle_landed = False
@@ -83,7 +83,7 @@ while True:
         #     circle_pos[1] -= circle_speed
         # if keys[pygame.K_DOWN]:
         #     circle_pos[1] += circle_speed
-        #Neuro
+        # #Neuro
         state = circle_pos + finishPos
         action = choose_action(state)
         

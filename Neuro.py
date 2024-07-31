@@ -17,6 +17,7 @@ class Net(nn.Module):
     def __init__(self):
         super(Net, self).__init__()
         self.fc1 = nn.Linear(4, 128)
+
         self.fc2 = nn.Linear(128, 128)
         self.fc3 = nn.Linear(128, 128)
         self.fc4 = nn.Linear(128, 4)
@@ -43,7 +44,7 @@ X_test = torch.tensor(X_test, dtype=torch.float32)
 y_test = torch.tensor(y_test, dtype=torch.long)
 
 
-num_epochs = 150
+num_epochs = 130
 for epoch in range(num_epochs):
     model.train()
     optimizer.zero_grad()
@@ -54,7 +55,7 @@ for epoch in range(num_epochs):
     if (epoch+1) % 10 == 0:
         print(f'Epoch [{epoch+1}/{num_epochs}], Loss: {loss.item():.4f}')
 
-
+model.eval()
 with torch.no_grad():
     outputs = model(X_test)
     _, predicted = torch.max(outputs, 1)
