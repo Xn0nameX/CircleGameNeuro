@@ -1,6 +1,17 @@
 import pygame
 import random
 import math
+import pandas as pd
+
+data = []
+
+def record_data(state, action):
+    data.append([*state, action])
+
+def save_data():
+    df = pd.DataFrame(data, columns=['circle_x', 'circle_y', 'finish_x', 'finish_y', 'action'])
+    df.to_csv('game_data.csv', index=False)
+
 
 pygame.init()
 screen_width = 640
@@ -43,11 +54,15 @@ def calculate_distance(pos1, pos2):
 while True:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
+            save_data()
             pygame.quit()
             quit()
 
     if not circle_landed and not finished:
         keys = pygame.key.get_pressed()
+        action = (keys[pygame.K_LEFT], keys[pygame.K_RIGHT], keys[pygame.K_UP], keys[pygame.K_DOWN])
+        if action in action_map:
+            record_data(circle_pos + finishPos, action_map[action])
         if keys[pygame.K_LEFT]:
             circle_pos[0] -= circle_speed
         if keys[pygame.K_RIGHT]:
