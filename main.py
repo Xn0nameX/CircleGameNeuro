@@ -2,6 +2,8 @@ import pygame
 import random
 import math
 import pandas as pd
+import torch
+from Neuro import model
 
 data = []
 
@@ -11,6 +13,15 @@ def record_data(state, action):
 def save_data():
     df = pd.DataFrame(data, columns=['circle_x', 'circle_y', 'finish_x', 'finish_y', 'action'])
     df.to_csv('game_data.csv', index=False)
+
+
+model.eval()
+def choose_action(state):
+    with torch.no_grad():
+        state = torch.tensor(state, dtype=torch.float32)
+        q_values = model(state)
+        action = torch.argmax(q_values).item()
+    return action
 
 
 pygame.init()
@@ -23,7 +34,7 @@ black = (0, 0, 0)
 white = (255, 255, 255)
 
 circle_radius = 30
-circle_speed = 8
+circle_speed = 3
 circle_color = blue
 circle_pos = [screen_width // 2, screen_height // 2]
 circle_landed = False
@@ -54,23 +65,38 @@ def calculate_distance(pos1, pos2):
 while True:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
-            save_data()
+            # save_data()
             pygame.quit()
             quit()
 
     if not circle_landed and not finished:
-        keys = pygame.key.get_pressed()
-        action = (keys[pygame.K_LEFT], keys[pygame.K_RIGHT], keys[pygame.K_UP], keys[pygame.K_DOWN])
-        if action in action_map:
-            record_data(circle_pos + finishPos, action_map[action])
-        if keys[pygame.K_LEFT]:
+        #Human
+        # keys = pygame.key.get_pressed()
+        # action = (keys[pygame.K_LEFT], keys[pygame.K_RIGHT], keys[pygame.K_UP], keys[pygame.K_DOWN])
+        # if action in action_map:
+        #     record_data(circle_pos + finishPos, action_map[action])
+        # if keys[pygame.K_LEFT]:
+        #     circle_pos[0] -= circle_speed
+        # if keys[pygame.K_RIGHT]:
+        #     circle_pos[0] += circle_speed
+        # if keys[pygame.K_UP]:
+        #     circle_pos[1] -= circle_speed
+        # if keys[pygame.K_DOWN]:
+        #     circle_pos[1] += circle_speed
+        #Neuro
+        state = circle_pos + finishPos
+        action = choose_action(state)
+        
+        if action == 0:  # Влево
             circle_pos[0] -= circle_speed
-        if keys[pygame.K_RIGHT]:
+        elif action == 1:  # Вправо
             circle_pos[0] += circle_speed
-        if keys[pygame.K_UP]:
+        elif action == 2:  # Вверх
             circle_pos[1] -= circle_speed
-        if keys[pygame.K_DOWN]:
+        elif action == 3:  # Вниз
             circle_pos[1] += circle_speed
+
+        
 
         if circle_pos[0] < 0 or circle_pos[1] < 0 or circle_pos[0] > screen_width or circle_pos[1] > screen_height:
             circle_landed = True
