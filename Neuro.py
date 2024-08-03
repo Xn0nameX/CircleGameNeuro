@@ -10,7 +10,7 @@ X = data[['circle_x', 'circle_y', 'finish_x', 'finish_y']].values
 y = data['action'].values
 
 
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.01, random_state=39)
 
 
 class Net(nn.Module):
@@ -19,7 +19,9 @@ class Net(nn.Module):
         self.fc1 = nn.Linear(4, 128)
 
         self.fc2 = nn.Linear(128, 128)
+
         self.fc3 = nn.Linear(128, 128)
+
         self.fc4 = nn.Linear(128, 4)
 
     

@@ -39,7 +39,7 @@ circle_color = blue
 circle_pos = [screen_width // 2, screen_height // 2]
 circle_landed = False
 
-finishRad = 10
+finishRad = 100
 finishColor = white
 finishPos = [random.randrange(640), random.randrange(480)]
 finished = False
@@ -57,7 +57,7 @@ start_time = pygame.time.get_ticks()
 time_since_reset = 0
 
 def check_finished(circle_pos, finish_pos):
-    return (abs(circle_pos[1] - finish_pos[1]) <= 20) and (abs(circle_pos[0] - finish_pos[0]) <= 20)
+    return (abs(circle_pos[1] - finish_pos[1]) <= 60) and (abs(circle_pos[0] - finish_pos[0]) <= 60)
 
 def calculate_distance(pos1, pos2):
     return math.hypot(pos1[0] - pos2[0], pos1[1] - pos2[1])
