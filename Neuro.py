@@ -16,13 +16,11 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.01, random
 class Net(nn.Module):
     def __init__(self):
         super(Net, self).__init__()
-        self.fc1 = nn.Linear(4, 128)
+        self.fc1 = nn.Linear(4, 130)
 
-        self.fc2 = nn.Linear(128, 128)
+        self.fc2 = nn.Linear(130, 130)
 
-        self.fc3 = nn.Linear(128, 128)
-
-        self.fc4 = nn.Linear(128, 4)
+        self.fc3 = nn.Linear(130, 4)
 
     
     def forward(self, x):
@@ -30,9 +28,7 @@ class Net(nn.Module):
 
         x = torch.relu(self.fc2(x))
 
-        x = torch.relu(self.fc3(x))
-
-        x = self.fc4(x)
+        x = self.fc3(x)
         return x
 
 model = Net()
@@ -46,7 +42,8 @@ X_test = torch.tensor(X_test, dtype=torch.float32)
 y_test = torch.tensor(y_test, dtype=torch.long)
 
 
-num_epochs = 130
+
+num_epochs = 170
 for epoch in range(num_epochs):
     model.train()
     optimizer.zero_grad()
